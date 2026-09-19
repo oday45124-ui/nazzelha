@@ -30,9 +30,8 @@ function analyzeUrl() {
             parsedUrl.protocol !== "http:" &&
             parsedUrl.protocol !== "https:"
         ) {
-            throw new Error("Invalid protocol");
+            throw new Error("Invalid URL");
         }
-
     } catch {
         showResult(
             "❌ الرابط غير صحيح",
@@ -41,24 +40,26 @@ function analyzeUrl() {
         return;
     }
 
+    const safeUrl = escapeHtml(parsedUrl.href);
+
     showResult(
-        "✅ تم تحليل الرابط",
+        "✅ الرابط جاهز",
         `
-        <p>تم التعرف على الرابط بنجاح.</p>
+        <p>تم التحقق من الرابط بنجاح.</p>
 
         <div class="download-action">
             <a
-                href="${escapeHtml(parsedUrl.href)}"
+                href="${safeUrl}"
+                class="download-button"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="download-button"
             >
-                ⬇️ فتح الملف
+                ⬇️ تنزيل الملف
             </a>
         </div>
 
         <p class="small-text">
-            هذا يعمل مع الروابط المباشرة للملفات التي يسمح صاحبها بتنزيلها.
+            يعمل التنزيل مع الروابط المباشرة للملفات التي يسمح صاحبها بتنزيلها.
         </p>
         `
     );
