@@ -13,10 +13,10 @@ input.addEventListener("keydown", function (event) {
 function analyzeUrl() {
     const url = input.value.trim();
 
-    if (url === "") {
+    if (!url) {
         showResult(
             "⚠️ أدخل الرابط أولًا",
-            "ضع رابط الملف في المربع ثم اضغط تحليل الرابط."
+            "<p>ضع رابط الملف في المربع ثم اضغط تحليل الرابط.</p>"
         );
         return;
     }
@@ -33,10 +33,10 @@ function analyzeUrl() {
             throw new Error("Invalid protocol");
         }
 
-    } catch (error) {
+    } catch {
         showResult(
             "❌ الرابط غير صحيح",
-            "تأكد من أن الرابط كامل ويبدأ بـ https://"
+            "<p>تأكد من أن الرابط يبدأ بـ https://</p>"
         );
         return;
     }
@@ -49,17 +49,16 @@ function analyzeUrl() {
         <div class="download-action">
             <a
                 href="${escapeHtml(parsedUrl.href)}"
-                download
                 target="_blank"
                 rel="noopener noreferrer"
                 class="download-button"
             >
-                ⬇️ تنزيل الملف
+                ⬇️ فتح الملف
             </a>
         </div>
 
         <p class="small-text">
-            يعمل هذا الزر مع الروابط المباشرة للملفات التي يسمح صاحبها بتنزيلها.
+            هذا يعمل مع الروابط المباشرة للملفات التي يسمح صاحبها بتنزيلها.
         </p>
         `
     );
@@ -83,34 +82,4 @@ function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
-}/* زر تنزيل الملف */
-.download-action {
-    margin-top: 20px;
-    text-align: center;
 }
-
-.download-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 28px;
-    min-width: 190px;
-    background: linear-gradient(135deg, #00e676, #00bfa5);
-    color: #06110d;
-    text-decoration: none;
-    font-size: 17px;
-    font-weight: bold;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0, 230, 118, 0.25);
-    transition: 0.25s ease;
-}
-
-.download-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 230, 118, 0.4);
-}
-
-.download-button:active {
-    transform: scale(0.96);
-        }
