@@ -2,6 +2,9 @@ const button = document.getElementById("analyzeBtn");
 const input = document.getElementById("videoUrl");
 const result = document.getElementById("result");
 
+const workerUrl =
+    "https://nazzelha-download.oday45124.workers.dev";
+
 button.addEventListener("click", analyzeUrl);
 
 input.addEventListener("keydown", function (event) {
@@ -16,7 +19,7 @@ function analyzeUrl() {
     if (!url) {
         showResult(
             "⚠️ أدخل الرابط أولًا",
-            "<p>ضع رابط الملف في المربع ثم اضغط تحليل الرابط.</p>"
+            "<p>ضع رابط الملف ثم اضغط تحليل الرابط.</p>"
         );
         return;
     }
@@ -30,17 +33,18 @@ function analyzeUrl() {
             parsedUrl.protocol !== "http:" &&
             parsedUrl.protocol !== "https:"
         ) {
-            throw new Error("Invalid URL");
+            throw new Error();
         }
     } catch {
         showResult(
             "❌ الرابط غير صحيح",
-            "<p>تأكد من أن الرابط يبدأ بـ https://</p>"
+            "<p>تأكد أن الرابط يبدأ بـ https://</p>"
         );
         return;
     }
 
-    const safeUrl = escapeHtml(parsedUrl.href);
+    const downloadUrl =
+        workerUrl + "/?url=" + encodeURIComponent(parsedUrl.href);
 
     showResult(
         "✅ الرابط جاهز",
@@ -49,7 +53,7 @@ function analyzeUrl() {
 
         <div class="download-action">
             <a
-                href="${safeUrl}"
+                href="${downloadUrl}"
                 class="download-button"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -59,7 +63,7 @@ function analyzeUrl() {
         </div>
 
         <p class="small-text">
-            يعمل التنزيل مع الروابط المباشرة للملفات التي يسمح صاحبها بتنزيلها.
+            استخدم فقط الملفات والروابط التي تملك حق تنزيلها.
         </p>
         `
     );
@@ -77,10 +81,4 @@ function showResult(title, message) {
         behavior: "smooth",
         block: "center"
     });
-}
-
-function escapeHtml(text) {
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
 }
